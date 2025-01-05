@@ -1,0 +1,55 @@
+/* Загальний контейнер сторінки */
+.container {
+    padding: 20px;
+}
+
+/* Форма пошуку */
+.searchForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Поле введення */
+.searchInput {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.searchInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+/* Кнопка пошуку */
+.searchButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.searchButton:hover {
+    background-color: #0056b3;
+}
+
+/* Заголовок результатів */
+.resultsTitle {
+    font-size: 1rem;
+    color: #343a40;
+    margin-bottom: 20px;
+    text-align: center;
+}

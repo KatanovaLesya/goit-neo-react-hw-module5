@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 const MovieList = ({ movies }) => (
   <ul className={styles.list}>
     {movies.map((movie) => (
-      <li key={movie.id} className={styles.item}>
-        <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+      <li key={movie.id} className={styles.listItem}>
+        <Link to={`/movies/${movie.id}`} className={styles.link}>{movie.title}</Link>
       </li>
     ))}
   </ul>

@@ -1,0 +1,19 @@
+/* MovieList.module.css */
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.listItem {
+    margin-bottom: 10px;
+}
+
+.link {
+    text-decoration: none;
+    color: #007bff;
+    transition: color 0.3s;
+}
+
+.link:hover {
+    color: #0056b3;
+}
