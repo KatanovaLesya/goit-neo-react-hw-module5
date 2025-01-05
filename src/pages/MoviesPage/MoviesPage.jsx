@@ -1,29 +1,45 @@
 import { useState } from 'react';
-import { searchMovies } from '../../api';
-import MovieList from '../../components/MovieList/MovieList';
+import { Link, useLocation } from 'react-router-dom';
+import { searchMovies } from '../../api/api';
 
 const MoviesPage = () => {
-  const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState('');
+  const location = useLocation(); // Отримуємо поточний шлях
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    searchMovies(query).then(setMovies).catch(console.error);
+  const handleSearch = async (event) => {
+    event.preventDefault();
+    if (!query.trim()) return;
+
+    try {
+      const results = await searchMovies(query);
+      setMovies(results);
+    } catch (error) {
+      console.error('Error searching movies:', error.message);
+    }
   };
 
   return (
     <div>
-      <h1>Search Movies</h1>
       <form onSubmit={handleSearch}>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Enter movie name"
+          placeholder="Search movies..."
         />
         <button type="submit">Search</button>
       </form>
-      <MovieList movies={movies} />
+      <ul>
+        {movies.map((movie) => (
+          <li key={movie.id}>
+            {/* Передаємо `state` з поточним шляхом */}
+            <Link to={`/movies/${movie.id}`} state={{ from: location.pathname }}>
+              {movie.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

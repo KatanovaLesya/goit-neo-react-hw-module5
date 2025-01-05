@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
-import { fetchMovieReviews } from '../../api';
-import PropTypes from 'prop-types'; 
+import { useParams } from 'react-router-dom';
+import { fetchMovieReviews } from '../../api/api';
 
-const MovieReviews = ({ movieId }) => {
+const MovieReviews = () => {
+  const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     fetchMovieReviews(movieId).then(setReviews).catch(console.error);
   }, [movieId]);
 
-  if (reviews.length === 0) {
-    return <p>No reviews available</p>;
-  }
+  if (reviews.length === 0) return <p>No reviews available</p>;
 
   return (
     <ul>
@@ -23,11 +22,6 @@ const MovieReviews = ({ movieId }) => {
       ))}
     </ul>
   );
-};
-
-// Перевірка типів пропсів
-MovieReviews.propTypes = {
-  movieId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
 };
 
 export default MovieReviews;
