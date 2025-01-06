@@ -26,9 +26,19 @@ const MovieDetailsPage = () => {
 
   return (
     <div className={styles.container}>
-      <button onClick={() => navigate(backLink)} className={styles.goBack}>
-        Go back
-      </button>
+      <button
+  onClick={() => {
+    if (backLink === '/movies') {
+      navigate('/movies', { replace: true }); // Очистка `query` при поверненні на MoviesPage
+    } else {
+      navigate(backLink); // Звичайне повернення
+    }
+  }}
+  className={styles.goBack}
+>
+  Go back
+</button>
+
       <div className={styles.details}>
         <img
           src={`https://image.tmdb.org/t/p/w500${poster_path}`}
