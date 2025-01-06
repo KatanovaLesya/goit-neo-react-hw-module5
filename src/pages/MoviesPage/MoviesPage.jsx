@@ -1,23 +1,36 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { searchMovies } from '../../api/api';
+import MovieList from '../../components/MovieList/MovieList';
 import styles from './MoviesPage.module.css';
 
 const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
-  const [query, setQuery] = useState('');
-  const location = useLocation(); // Отримуємо поточний шлях
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query') || '';
 
-  const handleSearch = async (event) => {
-    event.preventDefault();
+  useEffect(() => {
     if (!query.trim()) return;
 
-    try {
-      const results = await searchMovies(query);
-      setMovies(results);
-    } catch (error) {
-      console.error('Error searching movies:', error.message);
-    }
+    const fetchMovies = async () => {
+      try {
+        const results = await searchMovies(query);
+        setMovies(results);
+      } catch (error) {
+        console.error('Error searching movies:', error.message);
+      }
+    };
+
+    fetchMovies();
+  }, [query]);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const queryValue = form.elements.search.value.trim();
+    if (!queryValue) return;
+
+    setSearchParams({ query: queryValue });
   };
 
   return (
@@ -25,23 +38,16 @@ const MoviesPage = () => {
       <form onSubmit={handleSearch} className={styles.searchForm}>
         <input
           type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          name="search"
+          defaultValue={query}
           placeholder="Search movies..."
           className={styles.searchInput}
         />
-        <button type="submit" className={styles.searchButton}>Search</button>
+        <button type="submit" className={styles.searchButton}>
+          Search
+        </button>
       </form>
-      <ul>
-        {movies.map((movie) => (
-          <li key={movie.id} className={styles.resultsTitle}>
-            {/* Передаємо `state` з поточним шляхом */}
-            <Link to={`/movies/${movie.id}`} state={{ from: location.pathname }}>
-              {movie.title}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <MovieList movies={movies} />
     </div>
   );
 };
